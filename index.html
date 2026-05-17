@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Dorking Brasserie – Fine Indian Cuisine</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Raleway:wght@200;300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet"/>
   <style>
@@ -938,6 +938,89 @@
       footer{padding:2.5rem 1.5rem;}
       .specials-frame{width:100%;max-width:380px;}
     }
+/* =========================
+   MOBILE FIX
+   ========================= */
+
+html,body{
+    overflow-x:hidden;
+    width:100%;
+}
+
+img{
+    max-width:100%;
+}
+
+section{
+    width:100%;
+}
+
+@media(max-width:768px){
+
+    body{
+        overflow-x:hidden;
+    }
+
+    .navbar,
+    nav,
+    .hero,
+    .menu,
+    section,
+    footer{
+        width:100%;
+        max-width:100%;
+    }
+
+    h1{
+        font-size:clamp(32px,8vw,60px) !important;
+    }
+
+    h2{
+        font-size:clamp(26px,6vw,44px) !important;
+    }
+
+    p{
+        font-size:15px !important;
+        line-height:1.7 !important;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+        gap:12px !important;
+        padding:15px !important;
+    }
+
+    .menu a{
+        font-size:12px !important;
+    }
+
+    .navbar{
+        flex-wrap:wrap;
+        padding:15px !important;
+    }
+
+    .logo,
+    .logo-section{
+        transform:scale(0.85);
+        transform-origin:left top;
+    }
+
+}
+
+/* =========================
+   FLOATING CHAI CUP
+========================= */
+
+.floating-coffee{
+    position:fixed;
+    top:50%;
+    left:-120px;
+    width:85px;
+    z-index:9999;
+    pointer-events:none;
+    will-change:transform;
+    transition:transform 0.05s linear;
+}
   </style>
 </head>
 <body>
@@ -1494,6 +1577,37 @@ window.addEventListener('scroll',()=>{
   `;
 
 });
+
+const coffee = document.querySelector(".floating-coffee");
+
+let currentX = -150;
+let currentY = window.innerHeight / 2;
+
+function animateCoffee(){
+
+    currentX += 1.2;
+
+    const scrollProgress =
+        window.scrollY /
+        (document.body.scrollHeight - window.innerHeight);
+
+    currentY =
+        window.innerHeight * 0.15 +
+        scrollProgress * window.innerHeight * 0.7;
+
+    coffee.style.transform =
+        `translate(${currentX}px, ${currentY}px)
+         rotate(${currentX * 0.08}deg)`;
+
+    if(currentX > window.innerWidth + 200){
+        currentX = -200;
+    }
+
+    requestAnimationFrame(animateCoffee);
+
+}
+
+animateCoffee();
 </script>
 </body>
 </html>
