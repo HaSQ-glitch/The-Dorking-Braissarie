@@ -429,63 +429,10 @@
   min-height:140vh;
 }
 
-.chai-vis{
-  position:sticky;
-  top:18vh;
-  width:340px;
-  height:340px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:40;
-}
 
-.chai-circle{
-  width:270px;
-  height:270px;
-  border-radius:50%;
 
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 30%),
-    radial-gradient(circle, rgba(123,36,104,.72) 0%, rgba(22,10,18,.96) 72%);
 
-  border:1px solid rgba(212,160,23,.35);
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:6rem;
-
-  position:relative;
-  overflow:hidden;
-
-  backdrop-filter:blur(14px);
-
-  transition:
-    transform .08s linear,
-    box-shadow .25s ease;
-
-  will-change:transform;
-
-  box-shadow:
-    0 0 30px rgba(212,160,23,.18),
-    inset 0 0 40px rgba(255,255,255,.04);
-
-  animation:chaiPulse 4s ease-in-out infinite;
-}
-
-.chai-circle::before{
-  content:'';
-  position:absolute;
-  top:-120%;
-  left:-40%;
-  width:60%;
-  height:300%;
-  background:linear-gradient(180deg, transparent, rgba(255,255,255,.14), transparent);
-  transform:rotate(25deg);
-  animation:cupShine 5s linear infinite;
-}
 
 @keyframes cupShine{
   0%{
@@ -573,6 +520,8 @@
     width:100%;
     height:280px;
   }
+
+
 
   .chai-circle{
     width:220px;
@@ -938,88 +887,13 @@
       footer{padding:2.5rem 1.5rem;}
       .specials-frame{width:100%;max-width:380px;}
     }
-/* =========================
-   MOBILE FIX
-   ========================= */
+*{
+    box-sizing:border-box;
+}
 
 html,body{
     overflow-x:hidden;
     width:100%;
-}
-
-img{
-    max-width:100%;
-}
-
-section{
-    width:100%;
-}
-
-@media(max-width:768px){
-
-    body{
-        overflow-x:hidden;
-    }
-
-    .navbar,
-    nav,
-    .hero,
-    .menu,
-    section,
-    footer{
-        width:100%;
-        max-width:100%;
-    }
-
-    h1{
-        font-size:clamp(32px,8vw,60px) !important;
-    }
-
-    h2{
-        font-size:clamp(26px,6vw,44px) !important;
-    }
-
-    p{
-        font-size:15px !important;
-        line-height:1.7 !important;
-    }
-
-    .menu{
-        flex-wrap:wrap;
-        gap:12px !important;
-        padding:15px !important;
-    }
-
-    .menu a{
-        font-size:12px !important;
-    }
-
-    .navbar{
-        flex-wrap:wrap;
-        padding:15px !important;
-    }
-
-    .logo,
-    .logo-section{
-        transform:scale(0.85);
-        transform-origin:left top;
-    }
-
-}
-
-/* =========================
-   FLOATING CHAI CUP
-========================= */
-
-.floating-coffee{
-    position:fixed;
-    top:50%;
-    left:-120px;
-    width:85px;
-    z-index:9999;
-    pointer-events:none;
-    will-change:transform;
-    transition:transform 0.05s linear;
 }
   </style>
 </head>
@@ -1171,22 +1045,7 @@ section{
 
 <!-- ═══ CHAI NIGHT ═══ -->
 <section id="chai" class="sec">
-
-  <div class="chai-vis rev">
-
-    <div class="chai-circle" id="chaiCup">
-      ☕
-
-      <div class="steam s1"></div>
-      <div class="steam s2"></div>
-      <div class="steam s3"></div>
-
-    </div>
-
-    <div class="chai-ring1"></div>
-    <div class="chai-ring2"></div>
-
-  </div>
+    
 
   <div class="chai-content rev">
 
@@ -1539,10 +1398,7 @@ function bookTable(e){
 const chaiSection = document.getElementById('chai');
 const chaiCup = document.getElementById('chaiCup');
 
-window.addEventListener('scroll',()=>{
 
-  const rect = chaiSection.getBoundingClientRect();
-  const vh = window.innerHeight;
 
   let progress =
     (vh - rect.top) /
@@ -1576,38 +1432,55 @@ window.addEventListener('scroll',()=>{
     inset 0 0 40px rgba(255,255,255,.05)
   `;
 
-});
 
-const coffee = document.querySelector(".floating-coffee");
+</script>
+<!-- FLOATING CHAI CUP -->
+<div class="chai-cup">☕</div>
 
-let currentX = -150;
-let currentY = window.innerHeight / 2;
+<style>
+/* CHAI CUP */
+.chai-cup{
+    position: fixed;
+    top: 65%;
+    left: -120px;
+    font-size: 60px;
+    z-index: 999999;
+    pointer-events: none;
 
-function animateCoffee(){
-
-    currentX += 1.2;
-
-    const scrollProgress =
-        window.scrollY /
-        (document.body.scrollHeight - window.innerHeight);
-
-    currentY =
-        window.innerHeight * 0.15 +
-        scrollProgress * window.innerHeight * 0.7;
-
-    coffee.style.transform =
-        `translate(${currentX}px, ${currentY}px)
-         rotate(${currentX * 0.08}deg)`;
-
-    if(currentX > window.innerWidth + 200){
-        currentX = -200;
-    }
-
-    requestAnimationFrame(animateCoffee);
-
+    animation: chaiMove 18s linear infinite;
+    filter: drop-shadow(0 0 18px rgba(255,190,70,0.5));
 }
 
-animateCoffee();
-</script>
+/* MOBILE */
+@media(max-width:768px){
+    .chai-cup{
+        font-size: 42px;
+        top: 72%;
+    }
+}
+
+/* FLOATING ANIMATION */
+@keyframes chaiMove{
+    0%{
+        transform: translateX(0px) rotate(0deg);
+    }
+
+    25%{
+        transform: translateX(35vw) translateY(-30px) rotate(8deg);
+    }
+
+    50%{
+        transform: translateX(70vw) translateY(10px) rotate(-6deg);
+    }
+
+    75%{
+        transform: translateX(100vw) translateY(-25px) rotate(10deg);
+    }
+
+    100%{
+        transform: translateX(140vw) rotate(0deg);
+    }
+}
+</style>
 </body>
 </html>
